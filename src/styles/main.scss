@@ -1,4 +1,4 @@
-// 🔹 Сброс и базовые настройки
+// 🔹 Сброс стилей (Reset)
 *,
 *::before,
 *::after {
@@ -7,6 +7,7 @@
   padding: 0;
 }
 
+// 🔹 Базовые настройки body
 body {
   font-family:
     system-ui,
@@ -18,76 +19,58 @@ body {
   color: #333;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
+  padding: 20px;
 }
 
-// 🔹 Страница
-.page {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
+// 🔹 Основной контейнер
+.page__main {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
 
-  &__main {
-    width: 100%;
-    max-width: 800px;
-    background: #fff;
-    border-radius: 12px;
-    padding: 32px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  }
+// 🔹 Заголовок страницы
+.page__header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #eee;
+}
 
-  &__header {
-    text-align: center;
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid #eee;
-  }
+.page__title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
 
-  &__title {
-    font-size: 28px;
-    font-weight: 700;
-    color: #1a1a2e;
-    margin-bottom: 8px;
-  }
-
-  &__subtitle {
-    font-size: 16px;
-    color: #666;
-  }
-
-  &__footer {
-    margin-top: 40px;
-    padding-top: 24px;
-    border-top: 1px solid #eee;
-    text-align: center;
-
-    .link {
-      color: #667eea;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
+.page__subtitle {
+  font-size: 16px;
+  color: #666;
 }
 
 // 🔹 Демонстрационная секция
 .demo {
   margin-bottom: 40px;
-
-  &__title {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: #2d3436;
-  }
-
-  &__controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
 }
 
-// 🔹 Кнопки (BEM + модификаторы)
+.demo__title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #2d3436;
+}
+
+.demo__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+// 🔹 Кнопки
 .btn {
   padding: 12px 24px;
   font-size: 14px;
@@ -133,37 +116,30 @@ body {
   background: #f8f9fa;
   padding: 24px;
   border-radius: 8px;
+  margin-bottom: 24px;
+}
 
-  &__title {
-    font-size: 18px;
-    margin-bottom: 16px;
-    color: #2d3436;
-  }
+.info__title {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #2d3436;
+}
 
-  &__list {
-    list-style: none;
-    margin-bottom: 20px;
-  }
+.info__list {
+  list-style: none;
+}
 
-  &__item {
-    padding: 8px 0;
-    font-size: 14px;
-    color: #555;
-  }
+.info__item {
+  padding: 8px 0;
+  font-size: 14px;
+  color: #555;
+}
 
-  &__code {
-    pre {
-      background: #2d3436;
-      color: #fff;
-      padding: 16px;
-      border-radius: 6px;
-      overflow-x: auto;
-      font-size: 13px;
-      line-height: 1.4;
-
-      code {
-        font-family: "Fira Code", "Consolas", monospace;
-      }
-    }
-  }
+// 🔹 Футер
+.page__footer {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid #eee;
+  text-align: center;
+  color: #999;
 }

@@ -3,26 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Popover widget на чистом JavaScript — домашнее задание по работе с формами"
-    />
+    <meta name="description" content="Popover widget на чистом JavaScript" />
     <title>Popover Widget Demo</title>
   </head>
-  <body class="page">
+  <body>
     <main class="page__main">
-      <!-- Заголовок страницы -->
       <header class="page__header">
         <h1 class="page__title">Popover Widget</h1>
         <p class="page__subtitle">Реализация на чистом JavaScript без jQuery</p>
       </header>
 
-      <!-- Демонстрационная секция -->
       <section class="demo">
         <h2 class="demo__title">Попробуйте кликнуть на кнопки:</h2>
 
         <div class="demo__controls">
-          <!-- Кнопка 1: Простой пример -->
           <button
             type="button"
             class="btn btn--primary"
@@ -34,76 +28,41 @@
             Показать первый popover
           </button>
 
-          <!-- Кнопка 2: Другой контент -->
           <button
             type="button"
             class="btn btn--secondary"
             data-toggle="popover"
             data-title="Информация ℹ️"
-            data-content="Popover всегда позиционируется сверху от элемента и центрируется по горизонтали. Никаких трансформаций — только пиксели!"
+            data-content="Popover всегда позиционируется сверху от элемента и центрируется по горизонтали."
           >
             Показать второй popover
           </button>
 
-          <!-- Кнопка 3: Длинный текст -->
           <button
             type="button"
             class="btn btn--outline"
             data-toggle="popover"
             data-title="Важное уведомление"
-            data-content="Этот popover содержит более длинный текст, чтобы продемонстрировать перенос строк и адаптивную ширину виджета. Также проверяется, что он не вылезает за пределы экрана."
+            data-content="Этот popover содержит более длинный текст, чтобы продемонстрировать перенос строк."
           >
             Показать третий popover
           </button>
         </div>
       </section>
 
-      <!-- Секция с информацией для разработчиков -->
       <section class="info">
         <h2 class="info__title">Как это работает?</h2>
 
         <ul class="info__list">
           <li class="info__item">✅ Чистый JavaScript — без зависимостей</li>
-          <li class="info__item">
-            ✅ Позиционирование в пикселях (без translate/transform)
-          </li>
-          <li class="info__item">
-            ✅ Закрывается по клику вне popover и по клавише Escape
-          </li>
-          <li class="info__item">✅ Полная поддержка BEM-методологии</li>
-          <li class="info__item">✅ Покрытие тестами через Jest + JSDOM</li>
+          <li class="info__item">✅ Позиционирование в пикселях</li>
+          <li class="info__item">✅ Закрывается по клику вне popover</li>
         </ul>
-
-        <div class="info__code">
-          <p>Инициализация через data-атрибуты:</p>
-          <pre><code>&lt;button 
-  data-toggle="popover"
-  data-title="Заголовок"
-  data-content="Текст подсказки"
-&gt;
-  Кликни меня
-&lt;/button&gt;</code></pre>
-        </div>
       </section>
 
-      <!-- Футер -->
       <footer class="page__footer">
-        <p>
-          <small>
-            🎓 Домашнее задание «Работа с HTML-формами» |
-            <a
-              href="https://github.com/benovo71/popover-widget"
-              class="link"
-              target="_blank"
-              rel="noopener"
-            >
-              Исходный код на GitHub
-            </a>
-          </small>
-        </p>
+        <p><small>Домашнее задание «Работа с HTML-формами»</small></p>
       </footer>
     </main>
-
-    <!-- Скрипты подключаются автоматически через HtmlWebpackPlugin -->
   </body>
 </html>

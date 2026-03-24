@@ -1,5 +1,5 @@
 .popover {
-  position: fixed;
+  position: fixed; // Важно: fixed, а не absolute
   display: block;
   min-width: 200px;
   max-width: 280px;
