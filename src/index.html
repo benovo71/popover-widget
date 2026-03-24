@@ -1,68 +1,69 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Popover widget на чистом JavaScript" />
-    <title>Popover Widget Demo</title>
-  </head>
-  <body>
-    <main class="page__main">
-      <header class="page__header">
-        <h1 class="page__title">Popover Widget</h1>
-        <p class="page__subtitle">Реализация на чистом JavaScript без jQuery</p>
-      </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Popover widget на чистом JavaScript" />
+  <title>Popover Widget Demo</title>
+</head>
+<body>
+  <main class="page__main">
+    <header class="page__header">
+      <h1 class="page__title">Popover Widget</h1>
+      <p class="page__subtitle">Реализация на чистом JavaScript без jQuery</p>
+    </header>
 
-      <section class="demo">
-        <h2 class="demo__title">Попробуйте кликнуть на кнопки:</h2>
+    <section class="demo">
+      <h2 class="demo__title">Попробуйте кликнуть на кнопки:</h2>
+      
+      <div class="demo__controls">
+        <button 
+          type="button" 
+          class="btn btn--primary" 
+          data-toggle="popover"
+          data-title="Привет! 👋"
+          data-content="Это всплывающая подсказка, реализованная на чистом JavaScript. Кликните в любое место, чтобы закрыть."
+        >
+          Показать первый popover
+        </button>
 
-        <div class="demo__controls">
-          <button
-            type="button"
-            class="btn btn--primary"
-            id="demo-trigger"
-            data-toggle="popover"
-            data-title="Привет! 👋"
-            data-content="Это всплывающая подсказка, реализованная на чистом JavaScript. Кликните в любое место, чтобы закрыть."
-          >
-            Показать первый popover
-          </button>
+        <button 
+          type="button" 
+          class="btn btn--secondary" 
+          data-toggle="popover"
+          data-title="Информация ℹ️"
+          data-content="Popover всегда позиционируется сверху от элемента и центрируется по горизонтали."
+        >
+          Показать второй popover
+        </button>
 
-          <button
-            type="button"
-            class="btn btn--secondary"
-            data-toggle="popover"
-            data-title="Информация ℹ️"
-            data-content="Popover всегда позиционируется сверху от элемента и центрируется по горизонтали."
-          >
-            Показать второй popover
-          </button>
+        <button 
+          type="button" 
+          class="btn btn--outline" 
+          data-toggle="popover"
+          data-title="Важное уведомление"
+          data-content="Этот popover содержит более длинный текст, чтобы продемонстрировать перенос строк."
+        >
+          Показать третий popover
+        </button>
+      </div>
+    </section>
 
-          <button
-            type="button"
-            class="btn btn--outline"
-            data-toggle="popover"
-            data-title="Важное уведомление"
-            data-content="Этот popover содержит более длинный текст, чтобы продемонстрировать перенос строк."
-          >
-            Показать третий popover
-          </button>
-        </div>
-      </section>
+    <section class="info">
+      <h2 class="info__title">Как это работает?</h2>
+      
+      <ul class="info__list">
+        <li class="info__item">✅ Чистый JavaScript — без зависимостей</li>
+        <li class="info__item">✅ Позиционирование в пикселях</li>
+        <li class="info__item">✅ Закрывается по клику вне popover</li>
+        <li class="info__item">✅ BEM-методология</li>
+        <li class="info__item">✅ Покрытие тестами</li>
+      </ul>
+    </section>
 
-      <section class="info">
-        <h2 class="info__title">Как это работает?</h2>
-
-        <ul class="info__list">
-          <li class="info__item">✅ Чистый JavaScript — без зависимостей</li>
-          <li class="info__item">✅ Позиционирование в пикселях</li>
-          <li class="info__item">✅ Закрывается по клику вне popover</li>
-        </ul>
-      </section>
-
-      <footer class="page__footer">
-        <p><small>Домашнее задание «Работа с HTML-формами»</small></p>
-      </footer>
-    </main>
-  </body>
+    <footer class="page__footer">
+      <p><small>Домашнее задание «Работа с HTML-формами»</small></p>
+    </footer>
+  </main>
+</body>
 </html>

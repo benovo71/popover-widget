@@ -1,4 +1,3 @@
-// 🎯 Конфигурация игры — все значения вынесены в константы
 const DEFAULT_CONFIG = {
   OFFSET_PX: 10,
   MIN_MARGIN_PX: 5,
@@ -6,9 +5,6 @@ const DEFAULT_CONFIG = {
   ANIMATION_DURATION_MS: 150,
 };
 
-/**
- * Класс Popover — реализация всплывающего виджета на чистом JS
- */
 export default class Popover {
   constructor(triggerElement, { title, content, config = {} } = {}) {
     if (!triggerElement || !(triggerElement instanceof HTMLElement)) {
@@ -18,7 +14,6 @@ export default class Popover {
       throw new Error('Popover: обязательны параметры title и content');
     }
 
-    // 🔥 Проверка: не создан ли уже popover для этого элемента
     if (triggerElement._popoverInstance) {
       console.warn('Popover: для этого элемента уже создан popover');
       return triggerElement._popoverInstance;
@@ -32,7 +27,6 @@ export default class Popover {
     this.popoverElement = null;
     this.isVisible = false;
 
-    // 🔥 Сохраняем ссылку на экземпляр в элементе
     this.trigger._popoverInstance = this;
 
     this._init();
@@ -43,7 +37,7 @@ export default class Popover {
 
     this.trigger.addEventListener('click', (event) => {
       event.stopPropagation();
-      event.preventDefault(); // 🔥 Предотвращаем стандартное поведение
+      event.preventDefault();
       this.toggle();
     });
 
@@ -70,6 +64,7 @@ export default class Popover {
     this.popoverElement.setAttribute('role', 'tooltip');
     this.popoverElement.style.zIndex = this.config.Z_INDEX;
     this.popoverElement.hidden = true;
+    this.popoverElement.style.display = 'none';
 
     const arrow = document.createElement('div');
     arrow.className = 'popover__arrow';
@@ -96,9 +91,9 @@ export default class Popover {
   show() {
     if (this.isVisible) return;
 
-    // 🔥 Скрываем все остальные popover'ы
-    document.querySelectorAll('.popover').forEach((popover) => {
-      popover.hidden = true;
+    document.querySelectorAll('.popover').forEach((el) => {
+      el.hidden = true;
+      el.style.display = 'none';
     });
     document.querySelectorAll('[data-toggle="popover"]').forEach((el) => {
       if (el._popoverInstance) {
@@ -107,26 +102,24 @@ export default class Popover {
     });
 
     this.popoverElement.hidden = false;
+    this.popoverElement.style.display = 'block';
     this.isVisible = true;
 
     requestAnimationFrame(() => {
       this._position();
     });
 
-    this.trigger.dispatchEvent(
-      new CustomEvent('popover:show', { detail: { popover: this } }),
-    );
+    this.trigger.dispatchEvent(new CustomEvent('popover:show', { detail: { popover: this } }));
   }
 
   hide() {
     if (!this.isVisible) return;
 
     this.popoverElement.hidden = true;
+    this.popoverElement.style.display = 'none';
     this.isVisible = false;
 
-    this.trigger.dispatchEvent(
-      new CustomEvent('popover:hide', { detail: { popover: this } }),
-    );
+    this.trigger.dispatchEvent(new CustomEvent('popover:hide', { detail: { popover: this } }));
   }
 
   toggle() {
@@ -143,31 +136,24 @@ export default class Popover {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    // 🔥 Рассчитываем позицию
     let top = triggerRect.top - popoverRect.height - this.config.OFFSET_PX;
     const triggerCenter = triggerRect.left + triggerRect.width / 2;
     let left = triggerCenter - popoverRect.width / 2;
 
-    // 🔥 Не даём вылезти за левый край
     if (left < this.config.MIN_MARGIN_PX) {
       left = this.config.MIN_MARGIN_PX;
     }
 
-    // 🔥 Не даём вылезти за правый край
-    const maxLeft =
-      viewportWidth - popoverRect.width - this.config.MIN_MARGIN_PX;
+    const maxLeft = viewportWidth - popoverRect.width - this.config.MIN_MARGIN_PX;
     if (left > maxLeft) {
       left = maxLeft;
     }
 
-    // 🔥 Если не помещается сверху — показываем снизу
     if (top < this.config.MIN_MARGIN_PX) {
       top = triggerRect.bottom + this.config.OFFSET_PX;
     }
 
-    // 🔥 Не даём вылезти за нижний край
-    const maxTop =
-      viewportHeight - popoverRect.height - this.config.MIN_MARGIN_PX;
+    const maxTop = viewportHeight - popoverRect.height - this.config.MIN_MARGIN_PX;
     if (top > maxTop) {
       top = maxTop;
     }
@@ -192,7 +178,6 @@ export default class Popover {
     this.hide();
     this.popoverElement?.remove();
     this.trigger?.removeEventListener('click', this.toggle);
-    // 🔥 Очищаем ссылку
     if (this.trigger && this.trigger._popoverInstance === this) {
       delete this.trigger._popoverInstance;
     }

@@ -1,6 +1,6 @@
 .popover {
-  position: fixed; // Важно: fixed, а не absolute
-  display: block;
+  position: fixed;
+  display: none;
   min-width: 200px;
   max-width: 280px;
   padding: 12px;
@@ -14,7 +14,7 @@
   z-index: 1000;
 
   &[hidden] {
-    display: none;
+    display: none !important;
   }
 
   &__arrow {

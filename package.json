@@ -1,20 +1,24 @@
 {
   "name": "popover-widget",
   "version": "1.0.0",
+  "description": "Popover widget on pure JavaScript",
+  "main": "src/index.js",
   "scripts": {
-    "start": "webpack serve --mode development",
+    "start": "webpack serve --mode development --open",
     "build": "webpack --mode production",
     "test": "jest",
-    "test:watch": "jest --watch",
     "lint": "eslint src/**/*.js tests/**/*.js"
   },
+  "keywords": ["popover", "javascript", "widget"],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.22.0",
     "@babel/preset-env": "^7.22.0",
     "babel-jest": "^29.5.0",
     "babel-loader": "^9.1.0",
     "css-loader": "^6.8.0",
-    "eslint": "^8.40.0",
+    "eslint": "^8.57.1",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",

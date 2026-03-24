@@ -1,94 +1,78 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env, argv) => {
-  const isProduction = argv.mode === "production";
+  const isProduction = argv.mode === 'production';
 
   return {
-    // Точка входа
-    entry: "./src/index.js",
-
-    // Выходная папка и имя файла
+    entry: './src/index.js',
     output: {
-      path: path.resolve(__dirname, "dist"),
-      filename: "bundle.[contenthash].js",
-      clean: true, // Очищать папку dist перед сборкой
-      assetModuleFilename: "assets/[name].[hash][ext][query]", // Для картинок/шрифтов
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'bundle.[contenthash].js',
+      clean: true,
+      assetModuleFilename: 'assets/[name].[hash][ext][query]',
     },
-
-    // Source maps для отладки
-    devtool: isProduction ? "source-map" : "eval-source-map",
-
-    // Модули и лоадеры
+    devtool: isProduction ? 'source-map' : 'eval-source-map',
     module: {
       rules: [
-        // 🔹 JavaScript + Babel
         {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
-            loader: "babel-loader",
+            loader: 'babel-loader',
             options: {
               presets: [
                 [
-                  "@babel/preset-env",
+                  '@babel/preset-env',
                   {
-                    useBuiltIns: "usage",
+                    useBuiltIns: 'usage',
                     corejs: 3,
-                    targets: "> 0.25%, not dead",
+                    targets: '> 0.25%, not dead',
                   },
                 ],
               ],
             },
           },
         },
-
-        // 🔹 SCSS/SASS → CSS
         {
           test: /\.(scss|css)$/,
           use: [
-            isProduction ? MiniCssExtractPlugin.loader : "style-loader",
+            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
             {
-              loader: "css-loader",
+              loader: 'css-loader',
               options: {
-                importLoaders: 1, // Позволяет обрабатывать @import до css-loader
+                importLoaders: 1,
               },
             },
-            "sass-loader",
+            'sass-loader',
           ],
         },
-
-        // 🔹 Картинки (png, jpg, svg, gif)
         {
           test: /\.(png|jpe?g|gif|svg)$/i,
-          type: "asset",
+          type: 'asset',
           parser: {
             dataUrlCondition: {
-              maxSize: 8 * 1024, // ≤8KB → inline как base64
+              maxSize: 8 * 1024,
             },
           },
           generator: {
-            filename: "assets/images/[name].[hash][ext][query]",
+            filename: 'assets/images/[name].[hash][ext][query]',
           },
         },
-
-        // 🔹 Шрифты
         {
           test: /\.(woff2?|eot|ttf|otf)$/i,
-          type: "asset/resource",
+          type: 'asset/resource',
           generator: {
-            filename: "assets/fonts/[name].[hash][ext][query]",
+            filename: 'assets/fonts/[name].[hash][ext][query]',
           },
         },
       ],
     },
-
-    // Плагины
     plugins: [
       new HtmlWebpackPlugin({
-        template: "./src/index.html",
-        filename: "index.html",
+        template: './src/index.html',
+        filename: 'index.html',
         minify: isProduction
           ? {
               collapseWhitespace: true,
@@ -97,44 +81,36 @@ module.exports = (env, argv) => {
             }
           : false,
       }),
-      // 🔹 Извлекать CSS в отдельный файл только для продакшена
       ...(isProduction
         ? [
             new MiniCssExtractPlugin({
-              filename: "styles.[contenthash].css",
+              filename: 'styles.[contenthash].css',
             }),
           ]
         : []),
     ],
-
-    // Dev Server для разработки
     devServer: {
       static: {
-        directory: path.join(__dirname, "dist"),
+        directory: path.join(__dirname, 'dist'),
       },
       port: 8080,
       open: true,
       hot: true,
       client: {
-        logging: "warn",
+        logging: 'warn',
         progress: true,
       },
-      // Для истории браузера (если будет роутинг)
       historyApiFallback: true,
     },
-
-    // 🔍 Оптимизация (для продакшена)
     optimization: {
       minimize: isProduction,
       splitChunks: {
-        chunks: "all", // Выносить зависимости в отдельный chunk
+        chunks: 'all',
       },
     },
-
-    // 🔌 Разрешаем импорты без расширений
     resolve: {
-      extensions: [".js"],
-      modules: ["node_modules"],
+      extensions: ['.js'],
+      modules: ['node_modules'],
     },
   };
 };

@@ -1,9 +1,9 @@
 module.exports = {
-  testEnvironment: "jsdom",
-  testMatch: ["**/tests/**/*.js", "**/*.test.js"],
+  testEnvironment: 'jsdom',
+  testMatch: ['**/tests/**/*.js', '**/*.test.js'],
   collectCoverageFrom: [
-    "src/**/*.js",
-    "!src/index.js", // Исключаем точку входа из покрытия
+    'src/**/*.js',
+    '!src/index.js',
   ],
   coverageThreshold: {
     global: {
@@ -14,7 +14,7 @@ module.exports = {
     },
   },
   moduleNameMapper: {
-    "\\.(scss|css)$": "identity-obj-proxy", // Если тестируете компоненты со стилями
-    "\\.(png|jpg|gif|svg)$": "<rootDir>/tests/__mocks__/fileMock.js",
+    '\\.(scss|css)$': 'identity-obj-proxy',
+    '\\.(png|jpg|gif|svg)$': '<rootDir>/tests/__mocks__/fileMock.js',
   },
 };
