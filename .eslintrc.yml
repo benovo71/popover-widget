@@ -1,0 +1,78 @@
+root: true
+
+env:
+  browser: true
+  node: true
+  es2022: true
+  jest: true
+
+parserOptions:
+  ecmaVersion: 2022
+  sourceType: module
+
+# 🔹 Плагины (при необходимости: eslint-plugin-import и т.д.)
+# plugins:
+#   - import
+
+extends:
+  - eslint:recommended
+
+rules:
+  # === 🔧 Стиль кода ===
+  indent: ['error', 2] # 2 пробела
+  quotes: ['error', 'single', { avoidEscape: true }] # Одинарные кавычки
+  semi: ['error', 'always'] # Точка с запятой обязательна
+  comma-dangle: ['error', 'always-multiline'] # Запятые в многострочных объектах
+  arrow-parens: ['error', 'always'] # Скобки у стрелочных функций: (x) => x
+
+  # === 🚫 Запреты ===
+  no-var: 'error' # Запрет var, только let/const
+  no-console: ['warn', { allow: ['warn', 'error'] }] # console.log — предупреждение
+  no-debugger: 'error' # Запрет debugger
+  no-unused-vars: ['error', { argsIgnorePattern: '^_' }] # _arg — игнорировать
+
+  # === ✨ Лучшие практики ===
+  prefer-const: 'error' # Использовать const, если переменная не переназначается
+  no-useless-escape: 'off' # Разрешаем экранирование (частая потребность в регулках)
+
+  # === 🔢 Магические числа (как вы правильно заметили!) ===
+  no-magic-numbers:
+    - 'warn'
+    -
+      ignore: [0, 1, -1] # 0, 1, -1 — обычно не считаются "магическими"
+      ignoreArrayIndexes: true
+      enforceConst: true
+      detectObjects: true
+      # Игнорируем в конфигурационных объектах
+      ignoreProperties:
+        - 'GRID_SIZE'
+        - 'OFFSET_PX'
+        - 'Z_INDEX'
+        - 'MOVE_INTERVAL_MS'
+
+  # === 🧱 Классы и ООП ===
+  class-methods-use-this: 'warn' # Если метод не использует this — возможно, он лишний
+
+  # === 📦 Импорт/экспорт ===
+  # Если используете eslint-plugin-import, раскомментируйте:
+  # 'import/no-unresolved': 'error'
+  # 'import/extensions': ['error', 'always', { js: 'never' }]
+
+  # === 🧪 Тесты ===
+  # Для тестовых файлов можно ослабить правила через overrides (см. ниже)
+
+# === 🎯 Переопределения для тестов ===
+overrides:
+  - files: ['tests/**/*.js', '*.test.js', '*.spec.js']
+    env:
+      jest: true
+      node: true
+    rules:
+      no-magic-numbers: 'off' # В тестах магические числа допустимы для читаемости
+      no-console: 'off'
+
+# === 🌐 Глобальные переменные (если нужны) ===
+globals:
+  # Пример: если используете глобальный API браузера, который ESLint не видит
+  # CustomEvent: 'readonly'
+  # requestAnimationFrame: 'readonly'
