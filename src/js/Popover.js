@@ -18,10 +18,10 @@ export default class Popover {
    */
   constructor(triggerElement, { title, content, config = {} } = {}) {
     if (!triggerElement || !(triggerElement instanceof HTMLElement)) {
-      throw new Error("Popover: первый аргумент должен быть HTMLElement");
+      throw new Error('Popover: первый аргумент должен быть HTMLElement');
     }
     if (!title || !content) {
-      throw new Error("Popover: обязательны параметры title и content");
+      throw new Error('Popover: обязательны параметры title и content');
     }
 
     this.trigger = triggerElement;
@@ -40,13 +40,13 @@ export default class Popover {
     this._createPopoverElement();
 
     // Вешаем обработчик клика на триггер
-    this.trigger.addEventListener("click", (event) => {
+    this.trigger.addEventListener('click', (event) => {
       event.stopPropagation();
       this.toggle();
     });
 
     // Закрываем по клику вне popover и триггера
-    document.addEventListener("click", (event) => {
+    document.addEventListener('click', (event) => {
       if (
         this.isVisible &&
         !this.trigger.contains(event.target) &&
@@ -57,8 +57,8 @@ export default class Popover {
     });
 
     // Закрываем по нажатию Escape
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && this.isVisible) {
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && this.isVisible) {
         this.hide();
       }
     });
@@ -66,27 +66,27 @@ export default class Popover {
 
   _createPopoverElement() {
     // 🧱 Создаём структуру: .popover > .popover__arrow + .popover__body > .popover__title + .popover__content
-    this.popoverElement = document.createElement("div");
-    this.popoverElement.className = "popover";
-    this.popoverElement.setAttribute("role", "tooltip");
+    this.popoverElement = document.createElement('div');
+    this.popoverElement.className = 'popover';
+    this.popoverElement.setAttribute('role', 'tooltip');
     this.popoverElement.style.zIndex = this.config.Z_INDEX;
     this.popoverElement.hidden = true; // Скрыт по умолчанию
 
     // Стрелочка
-    const arrow = document.createElement("div");
-    arrow.className = "popover__arrow";
+    const arrow = document.createElement('div');
+    arrow.className = 'popover__arrow';
     this.popoverElement.appendChild(arrow);
 
     // Тело
-    const body = document.createElement("div");
-    body.className = "popover__body";
+    const body = document.createElement('div');
+    body.className = 'popover__body';
 
-    const title = document.createElement("h3");
-    title.className = "popover__title";
+    const title = document.createElement('h3');
+    title.className = 'popover__title';
     title.textContent = this.title;
 
-    const content = document.createElement("div");
-    content.className = "popover__content";
+    const content = document.createElement('div');
+    content.className = 'popover__content';
     content.textContent = this.content;
 
     body.appendChild(title);
@@ -113,7 +113,7 @@ export default class Popover {
 
     // 🎯 Для тестов: кастомное событие
     this.trigger.dispatchEvent(
-      new CustomEvent("popover:show", { detail: { popover: this } }),
+      new CustomEvent('popover:show', { detail: { popover: this } }),
     );
   }
 
@@ -127,7 +127,7 @@ export default class Popover {
     this.isVisible = false;
 
     this.trigger.dispatchEvent(
-      new CustomEvent("popover:hide", { detail: { popover: this } }),
+      new CustomEvent('popover:hide', { detail: { popover: this } }),
     );
   }
 
@@ -165,7 +165,7 @@ export default class Popover {
     }
 
     // 💡 Применяем позиционирование в пикселях (как просили в задании)
-    this.popoverElement.style.position = "fixed";
+    this.popoverElement.style.position = 'fixed';
     this.popoverElement.style.top = `${Math.round(top)}px`;
     this.popoverElement.style.left = `${Math.round(left)}px`;
   }
@@ -179,8 +179,8 @@ export default class Popover {
     this.title = title;
     this.content = content;
 
-    const titleEl = this.popoverElement.querySelector(".popover__title");
-    const contentEl = this.popoverElement.querySelector(".popover__content");
+    const titleEl = this.popoverElement.querySelector('.popover__title');
+    const contentEl = this.popoverElement.querySelector('.popover__content');
 
     if (titleEl) titleEl.textContent = title;
     if (contentEl) contentEl.textContent = content;
@@ -192,6 +192,6 @@ export default class Popover {
   destroy() {
     this.hide();
     this.popoverElement?.remove();
-    this.trigger?.removeEventListener("click", this.toggle);
+    this.trigger?.removeEventListener('click', this.toggle);
   }
 }

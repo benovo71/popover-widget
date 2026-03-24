@@ -1,16 +1,16 @@
 /**
  * @jest-environment jsdom
  */
-import Popover from "../src/js/Popover";
+import Popover from '../src/js/Popover';
 
-describe("Popover class", () => {
+describe('Popover class', () => {
   let trigger;
   let popover;
 
   beforeEach(() => {
     // 🧹 Очищаем DOM перед каждым тестом
     document.body.innerHTML = '<button id="trigger">Click me</button>';
-    trigger = document.getElementById("trigger");
+    trigger = document.getElementById('trigger');
   });
 
   afterEach(() => {
@@ -18,22 +18,22 @@ describe("Popover class", () => {
     jest.clearAllMocks();
   });
 
-  test("создаёт экземпляр с валидными параметрами", () => {
+  test('создаёт экземпляр с валидными параметрами', () => {
     expect(() => {
       popover = new Popover(trigger, {
-        title: "Test",
-        content: "Content",
+        title: 'Test',
+        content: 'Content',
       });
     }).not.toThrow();
   });
 
-  test("бросает ошибку, если нет title или content", () => {
-    expect(() => new Popover(trigger, { title: "Only title" })).toThrow();
-    expect(() => new Popover(trigger, { content: "Only content" })).toThrow();
+  test('бросает ошибку, если нет title или content', () => {
+    expect(() => new Popover(trigger, { title: 'Only title' })).toThrow();
+    expect(() => new Popover(trigger, { content: 'Only content' })).toThrow();
   });
 
-  test("по клику на триггер показывается popover", () => {
-    popover = new Popover(trigger, { title: "Hi", content: "There" });
+  test('по клику на триггер показывается popover', () => {
+    popover = new Popover(trigger, { title: 'Hi', content: 'There' });
 
     trigger.click();
 
@@ -41,7 +41,7 @@ describe("Popover class", () => {
     expect(popover.popoverElement.hidden).toBe(false);
   });
 
-  test("popover позиционируется над триггером", () => {
+  test('popover позиционируется над триггером', () => {
     // 📐 Задаём моковые размеры для предсказуемого теста
     trigger.getBoundingClientRect = () => ({
       top: 200,
@@ -50,7 +50,7 @@ describe("Popover class", () => {
       height: 40,
     });
 
-    popover = new Popover(trigger, { title: "Pos", content: "Test" });
+    popover = new Popover(trigger, { title: 'Pos', content: 'Test' });
     trigger.click();
 
     // Ждём requestAnimationFrame
@@ -76,8 +76,8 @@ describe("Popover class", () => {
     });
   });
 
-  test("клик вне popover закрывает его", () => {
-    popover = new Popover(trigger, { title: "Close", content: "Test" });
+  test('клик вне popover закрывает его', () => {
+    popover = new Popover(trigger, { title: 'Close', content: 'Test' });
     trigger.click(); // Открыли
     expect(popover.isVisible).toBe(true);
 
@@ -88,26 +88,26 @@ describe("Popover class", () => {
     expect(popover.popoverElement.hidden).toBe(true);
   });
 
-  test("нажатие Escape закрывает popover", () => {
-    popover = new Popover(trigger, { title: "Escape", content: "Test" });
+  test('нажатие Escape закрывает popover', () => {
+    popover = new Popover(trigger, { title: 'Escape', content: 'Test' });
     trigger.click();
 
-    const escapeEvent = new KeyboardEvent("keydown", { key: "Escape" });
+    const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
     document.dispatchEvent(escapeEvent);
 
     expect(popover.isVisible).toBe(false);
   });
 
-  test("updateContent меняет текст в открытом popover", () => {
-    popover = new Popover(trigger, { title: "Old", content: "Old content" });
+  test('updateContent меняет текст в открытом popover', () => {
+    popover = new Popover(trigger, { title: 'Old', content: 'Old content' });
     trigger.click();
 
-    popover.updateContent("New Title", "New Content");
+    popover.updateContent('New Title', 'New Content');
 
-    const titleEl = popover.popoverElement.querySelector(".popover__title");
-    const contentEl = popover.popoverElement.querySelector(".popover__content");
+    const titleEl = popover.popoverElement.querySelector('.popover__title');
+    const contentEl = popover.popoverElement.querySelector('.popover__content');
 
-    expect(titleEl.textContent).toBe("New Title");
-    expect(contentEl.textContent).toBe("New Content");
+    expect(titleEl.textContent).toBe('New Title');
+    expect(contentEl.textContent).toBe('New Content');
   });
 });
