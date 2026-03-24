@@ -1,60 +1,41 @@
-// 🎨 Переменные для лёгкой кастомизации
-$popover: (
-  bg: #ffffff,
-  border: #ebebeb,
-  text: #333333,
-  title-weight: 600,
-  arrow-size: 8px,
-  padding: 12px,
-  border-radius: 6px,
-  shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
-);
-
 .popover {
-  position: fixed; // Позиционирование через JS в px
+  position: fixed;
   display: block;
   min-width: 200px;
-  max-width: 300px;
-  padding: map-get($popover, padding);
-  background: map-get($popover, bg);
-  border: 1px solid map-get($popover, border);
-  border-radius: map-get($popover, border-radius);
-  box-shadow: map-get($popover, shadow);
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
+  max-width: 280px;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: system-ui, -apple-system, sans-serif;
   font-size: 14px;
-  color: map-get($popover, text);
+  color: #333333;
   z-index: 1000;
 
-  // 🎯 Скрываем через hidden-атрибут (без display: none в CSS, чтобы считать размеры)
   &[hidden] {
     display: none;
   }
 
   &__arrow {
     position: absolute;
-    bottom: -#{map-get($popover, arrow-size)};
+    bottom: -8px;
     left: 50%;
-    transform: translateX(
-      -50%
-    ); // ⚠️ Это для стрелки — можно оставить, т.к. это часть дизайна
+    transform: translateX(-50%);
     width: 0;
     height: 0;
-    border-left: #{map-get($popover, arrow-size)}px solid transparent;
-    border-right: #{map-get($popover, arrow-size)}px solid transparent;
-    border-top: #{map-get($popover, arrow-size)}px solid
-      map-get($popover, border);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #ebebeb;
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: 1px;
-      left: -#{map-get($popover, arrow-size) + 1}px;
-      border-left: #{map-get($popover, arrow-size)}px solid transparent;
-      border-right: #{map-get($popover, arrow-size)}px solid transparent;
-      border-top: #{map-get($popover, arrow-size)}px solid map-get($popover, bg);
+      left: -8px;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid #ffffff;
     }
   }
 
@@ -66,7 +47,7 @@ $popover: (
   &__title {
     margin: 0 0 8px;
     font-size: 15px;
-    font-weight: map-get($popover, title-weight);
+    font-weight: 600;
     color: #1a1a1a;
   }
 

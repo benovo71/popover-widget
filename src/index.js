@@ -2,7 +2,7 @@ import './styles/main.scss';
 import Popover from './js/Popover';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 🔍 Ищем все элементы с атрибутом data-toggle="popover"
+  // Ищем все элементы с атрибутом data-toggle="popover"
   document.querySelectorAll('[data-toggle="popover"]').forEach((trigger) => {
     const title = trigger.dataset.title || 'Заголовок';
     const content = trigger.dataset.content || 'Текст подсказки';
@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     new Popover(trigger, { title, content });
   });
 
-  // 🎯 Пример программной инициализации (для тестов / демо)
+  // Пример программной инициализации
   const demoBtn = document.getElementById('demo-trigger');
-  if (demoBtn) {
+  if (demoBtn && !demoBtn._popoverInstance) {
     new Popover(demoBtn, {
       title: 'Пример Popover',
       content: 'Этот виджет реализован на чистом JavaScript без jQuery!',

@@ -1,27 +1,27 @@
-// 🎯 Конфигурация по умолчанию — выносим "магические" значения
+// 🎯 Конфигурация игры — все значения вынесены в константы
 const DEFAULT_CONFIG = {
-  OFFSET_PX: 10, // Отступ от элемента-триггера
-  MIN_MARGIN_PX: 5, // Минимальный отступ от краёв экрана
-  Z_INDEX: 1000, // Поверх остальных элементов
-  ANIMATION_DURATION_MS: 150, // Длительность анимации (если добавите)
+  OFFSET_PX: 10,
+  MIN_MARGIN_PX: 5,
+  Z_INDEX: 1000,
+  ANIMATION_DURATION_MS: 150,
 };
 
 /**
  * Класс Popover — реализация всплывающего виджета на чистом JS
- * @example
- * new Popover(document.querySelector('#trigger'), { title: 'Заголовок', content: 'Текст' });
  */
 export default class Popover {
-  /**
-   * @param {HTMLElement} triggerElement - элемент, по клику на который показывается popover
-   * @param {Object} options - настройки: title, content, config
-   */
   constructor(triggerElement, { title, content, config = {} } = {}) {
     if (!triggerElement || !(triggerElement instanceof HTMLElement)) {
       throw new Error('Popover: первый аргумент должен быть HTMLElement');
     }
     if (!title || !content) {
       throw new Error('Popover: обязательны параметры title и content');
+    }
+
+    // 🔥 Проверка: не создан ли уже popover для этого элемента
+    if (triggerElement._popoverInstance) {
+      console.warn('Popover: для этого элемента уже создан popover');
+      return triggerElement._popoverInstance;
     }
 
     this.trigger = triggerElement;
@@ -32,20 +32,21 @@ export default class Popover {
     this.popoverElement = null;
     this.isVisible = false;
 
+    // 🔥 Сохраняем ссылку на экземпляр в элементе
+    this.trigger._popoverInstance = this;
+
     this._init();
   }
 
   _init() {
-    // Создаём DOM-элемент popover (но не добавляем в document сразу)
     this._createPopoverElement();
 
-    // Вешаем обработчик клика на триггер
     this.trigger.addEventListener('click', (event) => {
       event.stopPropagation();
+      event.preventDefault(); // 🔥 Предотвращаем стандартное поведение
       this.toggle();
     });
 
-    // Закрываем по клику вне popover и триггера
     document.addEventListener('click', (event) => {
       if (
         this.isVisible &&
@@ -56,7 +57,6 @@ export default class Popover {
       }
     });
 
-    // Закрываем по нажатию Escape
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && this.isVisible) {
         this.hide();
@@ -65,61 +65,59 @@ export default class Popover {
   }
 
   _createPopoverElement() {
-    // 🧱 Создаём структуру: .popover > .popover__arrow + .popover__body > .popover__title + .popover__content
     this.popoverElement = document.createElement('div');
     this.popoverElement.className = 'popover';
     this.popoverElement.setAttribute('role', 'tooltip');
     this.popoverElement.style.zIndex = this.config.Z_INDEX;
-    this.popoverElement.hidden = true; // Скрыт по умолчанию
+    this.popoverElement.hidden = true;
 
-    // Стрелочка
     const arrow = document.createElement('div');
     arrow.className = 'popover__arrow';
     this.popoverElement.appendChild(arrow);
 
-    // Тело
     const body = document.createElement('div');
     body.className = 'popover__body';
 
-    const title = document.createElement('h3');
-    title.className = 'popover__title';
-    title.textContent = this.title;
+    const titleEl = document.createElement('h3');
+    titleEl.className = 'popover__title';
+    titleEl.textContent = this.title;
 
-    const content = document.createElement('div');
-    content.className = 'popover__content';
-    content.textContent = this.content;
+    const contentEl = document.createElement('div');
+    contentEl.className = 'popover__content';
+    contentEl.textContent = this.content;
 
-    body.appendChild(title);
-    body.appendChild(content);
+    body.appendChild(titleEl);
+    body.appendChild(contentEl);
     this.popoverElement.appendChild(body);
 
-    // Добавляем в body (для позиционирования через JS)
     document.body.appendChild(this.popoverElement);
   }
 
-  /**
-   * Показывает popover и позиционирует его
-   */
   show() {
     if (this.isVisible) return;
+
+    // 🔥 Скрываем все остальные popover'ы
+    document.querySelectorAll('.popover').forEach((popover) => {
+      popover.hidden = true;
+    });
+    document.querySelectorAll('[data-toggle="popover"]').forEach((el) => {
+      if (el._popoverInstance) {
+        el._popoverInstance.isVisible = false;
+      }
+    });
 
     this.popoverElement.hidden = false;
     this.isVisible = true;
 
-    // 📐 Позиционируем после того, как элемент добавлен в DOM и отрендерен
     requestAnimationFrame(() => {
       this._position();
     });
 
-    // 🎯 Для тестов: кастомное событие
     this.trigger.dispatchEvent(
       new CustomEvent('popover:show', { detail: { popover: this } }),
     );
   }
 
-  /**
-   * Скрывает popover
-   */
   hide() {
     if (!this.isVisible) return;
 
@@ -131,50 +129,54 @@ export default class Popover {
     );
   }
 
-  /**
-   * Переключает видимость
-   */
   toggle() {
-    this.isVisible ? this.hide() : this.show();
+    if (this.isVisible) {
+      this.hide();
+    } else {
+      this.show();
+    }
   }
 
-  /**
-   * 📐 Позиционирует popover над триггером, по центру по горизонтали
-   * Использует только пиксели (без translate/transform)
-   */
   _position() {
     const triggerRect = this.trigger.getBoundingClientRect();
     const popoverRect = this.popoverElement.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
 
-    // 📍 Вертикаль: всегда сверху от триггера
-    const top = triggerRect.top - popoverRect.height - this.config.OFFSET_PX;
-
-    // 📍 Горизонталь: центр триггера минус половина ширины popover
+    // 🔥 Рассчитываем позицию
+    let top = triggerRect.top - popoverRect.height - this.config.OFFSET_PX;
     const triggerCenter = triggerRect.left + triggerRect.width / 2;
     let left = triggerCenter - popoverRect.width / 2;
 
-    // 🛡 Не даём вылезти за пределы экрана
+    // 🔥 Не даём вылезти за левый край
     if (left < this.config.MIN_MARGIN_PX) {
       left = this.config.MIN_MARGIN_PX;
     }
+
+    // 🔥 Не даём вылезти за правый край
     const maxLeft =
       viewportWidth - popoverRect.width - this.config.MIN_MARGIN_PX;
     if (left > maxLeft) {
       left = maxLeft;
     }
 
-    // 💡 Применяем позиционирование в пикселях (как просили в задании)
+    // 🔥 Если не помещается сверху — показываем снизу
+    if (top < this.config.MIN_MARGIN_PX) {
+      top = triggerRect.bottom + this.config.OFFSET_PX;
+    }
+
+    // 🔥 Не даём вылезти за нижний край
+    const maxTop =
+      viewportHeight - popoverRect.height - this.config.MIN_MARGIN_PX;
+    if (top > maxTop) {
+      top = maxTop;
+    }
+
     this.popoverElement.style.position = 'fixed';
     this.popoverElement.style.top = `${Math.round(top)}px`;
     this.popoverElement.style.left = `${Math.round(left)}px`;
   }
 
-  /**
-   * Обновляет контент (для динамических данных)
-   * @param {string} title - новый заголовок
-   * @param {string} content - новый текст
-   */
   updateContent(title, content) {
     this.title = title;
     this.content = content;
@@ -186,12 +188,13 @@ export default class Popover {
     if (contentEl) contentEl.textContent = content;
   }
 
-  /**
-   * Удаляет popover из DOM и очищает обработчики
-   */
   destroy() {
     this.hide();
     this.popoverElement?.remove();
     this.trigger?.removeEventListener('click', this.toggle);
+    // 🔥 Очищаем ссылку
+    if (this.trigger && this.trigger._popoverInstance === this) {
+      delete this.trigger._popoverInstance;
+    }
   }
 }
