@@ -9,7 +9,11 @@
     "test": "jest",
     "lint": "eslint src/**/*.js tests/**/*.js"
   },
-  "keywords": ["popover", "javascript", "widget"],
+  "keywords": [
+    "popover",
+    "javascript",
+    "widget"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -23,7 +27,7 @@
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
     "mini-css-extract-plugin": "^2.7.0",
-    "sass": "^1.62.0",
+    "sass": "^1.98.0",
     "sass-loader": "^13.3.0",
     "style-loader": "^3.3.0",
     "webpack": "^5.88.0",

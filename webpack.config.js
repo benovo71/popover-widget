@@ -1,34 +1,34 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (env, argv) => {
-  const isProduction = argv.mode === 'production';
+  const isProduction = argv.mode === "production";
 
   return {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-      path: path.resolve(__dirname, 'dist'),
-      filename: 'bundle.[contenthash].js',
+      path: path.resolve(__dirname, "dist"),
+      filename: "bundle.[contenthash].js",
       clean: true,
-      assetModuleFilename: 'assets/[name].[hash][ext][query]',
+      assetModuleFilename: "assets/[name].[hash][ext][query]",
     },
-    devtool: isProduction ? 'source-map' : 'eval-source-map',
+    devtool: isProduction ? "source-map" : "eval-source-map", // Исправлено: devTool → devtool
     module: {
       rules: [
         {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader',
+            loader: "babel-loader",
             options: {
               presets: [
                 [
-                  '@babel/preset-env',
+                  "@babel/preset-env",
                   {
-                    useBuiltIns: 'usage',
+                    useBuiltIns: "usage",
                     corejs: 3,
-                    targets: '> 0.25%, not dead',
+                    targets: "> 0.25%, not dead",
                   },
                 ],
               ],
@@ -38,41 +38,49 @@ module.exports = (env, argv) => {
         {
           test: /\.(scss|css)$/,
           use: [
-            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+            isProduction ? MiniCssExtractPlugin.loader : "style-loader",
             {
-              loader: 'css-loader',
+              loader: "css-loader",
               options: {
                 importLoaders: 1,
               },
             },
-            'sass-loader',
+            {
+              loader: "sass-loader",
+              options: {
+                implementation: require("sass"),
+                sassOptions: {
+                  quietDeps: true,
+                },
+              },
+            },
           ],
         },
         {
           test: /\.(png|jpe?g|gif|svg)$/i,
-          type: 'asset',
+          type: "asset",
           parser: {
             dataUrlCondition: {
               maxSize: 8 * 1024,
             },
           },
           generator: {
-            filename: 'assets/images/[name].[hash][ext][query]',
+            filename: "assets/images/[name].[hash][ext][query]",
           },
         },
         {
           test: /\.(woff2?|eot|ttf|otf)$/i,
-          type: 'asset/resource',
+          type: "asset/resource",
           generator: {
-            filename: 'assets/fonts/[name].[hash][ext][query]',
+            filename: "assets/fonts/[name].[hash][ext][query]",
           },
         },
       ],
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './src/index.html',
-        filename: 'index.html',
+        template: "./src/index.html",
+        filename: "index.html",
         minify: isProduction
           ? {
               collapseWhitespace: true,
@@ -84,20 +92,20 @@ module.exports = (env, argv) => {
       ...(isProduction
         ? [
             new MiniCssExtractPlugin({
-              filename: 'styles.[contenthash].css',
+              filename: "styles.[contenthash].css",
             }),
           ]
         : []),
     ],
     devServer: {
       static: {
-        directory: path.join(__dirname, 'dist'),
+        directory: path.join(__dirname, "dist"),
       },
       port: 8080,
       open: true,
       hot: true,
       client: {
-        logging: 'warn',
+        logging: "warn",
         progress: true,
       },
       historyApiFallback: true,
@@ -105,12 +113,12 @@ module.exports = (env, argv) => {
     optimization: {
       minimize: isProduction,
       splitChunks: {
-        chunks: 'all',
+        chunks: "all",
       },
     },
     resolve: {
-      extensions: ['.js'],
-      modules: ['node_modules'],
+      extensions: [".js"],
+      modules: ["node_modules"],
     },
   };
 };
